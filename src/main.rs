@@ -13,7 +13,7 @@ fn main() {
     
     //Unfinished visual board representation to test printing the board
     //correctly
-    let board = vec![
+    let board = [
         "br", "bn", "bb", "bq", "bk", "bb", "bn", "br",
         "bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp",
         "e", "e", "e", "e", "e", "e", "e", "e",
