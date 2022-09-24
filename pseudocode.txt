@@ -1,0 +1,56 @@
+pseudocode
+
+//check if it is checkmate/checkmate with get_game_state?
+
+if checkmate {
+    return GameOver
+}get_ga
+else if check {
+    //update active colour
+    return Check
+}
+else {
+    return InProgress
+}
+
+
+
+//Unfinished visual board representation to test printing the board
+//correctly
+let board = [
+    "br", "bn", "bb", "bq", "bk", "bb", "bn", "br", "bp", "bp", "bp", "bp", "bp", "bp", "bp",
+    "bp", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e",
+    "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "wp", "wp",
+    "wp", "wp", "wp", "wp", "wp", "wp", "wr", "wn", "wb", "wq", "wk", "wb", "wn", "wr",
+];
+
+print_board(board);
+
+fn print_board(array: board) {
+    //prints the initital board
+    //TODO fix this to print each line correctly with rank and file next to the board
+    for piece in board {
+        println!("{}", piece)
+    }
+} 
+
+
+
+//function that checks if move is possible probably useless
+ //check if tile to move to e.g. "to" is in possible_moves
+
+ possible_moves = get_possible_moves(from);
+ let mut move_is_possible = false;     
+    for possible_move in 0..possible_moves.len() {
+        if possible_move == to {
+            move_is_possible = true;
+            break;
+        } else if possible_move == possible_moves.len() {
+            move_is_possible = false;
+        }
+    }
+
+    if !move_is_possible {
+        println!("{}", "Illegal move, bruh");
+        None
+    } 

@@ -100,9 +100,7 @@ impl Game {
         Game {
             /* initialise board, set game state to in progress, set active colour to white, ... */
             //TODO which order to store pieces
-            board: [
-                
-            ],
+            board: [],
             state: GameState::InProgress,
             active_colour: Colour::White,
         }
@@ -112,45 +110,10 @@ impl Game {
     /// move a piece and return the resulting state of the game.
     /// param: the position to move from and move to. Returns Option
     pub fn make_move(&mut self, from: String, to: String) -> Option<GameState> {
-        let mut vec: Vec<String> = Vec::with_capacity(60);
+        //code from "piece_move" function on yt
 
-        //Check if the tile to move from is empty
-        if get_possible_moves(from) == None {
-            println!("{}", "Illegal move, bruh");
-            None
-        }
+    }
 
-        possible_moves = get_possible_moves(from);
-        let mut move_is_possible: bool;
-
-        //check if tile to move to e.g. "to" is in possible_moves
-        for possible_move in 0..possible_moves.len() {
-            if possible_move == to {
-                move_is_possible = true;
-                break;
-            } else if possible_move == possible_moves.len() {
-                move_is_possible = false;
-            }
-        }
-
-        if !move_is_possible {
-            println!("{}", "Illegal move, bruh");
-            None
-        } else {
-            //move piece there
-        }
-        //check if it is checkmate/checkmate with get_game_state?
-        /*
-        if checkmate {
-            return GameOver
-        }get_ga
-        else if check {
-            //update active colour
-            return Check
-        }
-        else {
-            return InProgress
-        } */
     }
 
     /// Set the piece type that a pawn turns into following a promotion.
@@ -158,7 +121,7 @@ impl Game {
         ()
     }
 
-    //Get the current game state.
+    //Get the current game state.//TODO what's the point of this 
     pub fn get_game_state(&self) -> GameState {
         self.state
     }
@@ -171,22 +134,26 @@ impl Game {
         let index = parse_inputted_tile_to_index(tile_position);
 
         //TODO how to find piece on the board with the index and assign to variable piece_type
-        let piece = self.board[index].expect("Empty square"); //TODO handle None and Some
+        let piece = self.board[index].unwrap();
+
+        if piece == None {
+            None
+        }
 
         //Return the possible moves
         Some(match piece.piece_type {
             BlackPawn => black_pawn_possible_moves(index),
-            BlackRook => todo!(),
-            BlackKnight => todo!(),
-            BlackBishop => todo!(),
-            BlackKing => todo!(),
-            BlackQueen => todo!(),
-            WhitePawn => todo!(),
-            WhiteRook => todo!(),
-            WhiteKnight => todo!(),
-            WhiteBishop => todo!(),
-            WhiteKing => todo!(),
-            WhiteQueen => todo!(),
+            BlackRook => black_rook_possible_moves(),
+            BlackKnight => black_knight_possible_moves(),
+            BlackBishop => black_knight_possible_moves(),
+            BlackKing => black_king_possible_moves(),
+            BlackQueen => black_queen_possible_moves(),
+            WhitePawn => white_pawn_possible_moves(),
+            WhiteRook => white_rook_possible_moves(),
+            WhiteKnight => white_knight_possible_moves(),
+            WhiteBishop => white_bishop_possible_moves(),
+            WhiteKing => white_king_possible_moves(),
+            WhiteQueen => white_queen_possible_moves(),
         })
     }
 
@@ -212,13 +179,28 @@ impl Game {
         let mut row: i32;
 
         /*
-        use match case with 1 => 0 osv
+        use match case with 1 => 0 or parse string to int and subtact 1 from the result
         */
 
         //return the index
         return row * 8 + col;
     }
 
+    /// # Arguments
+    ///
+    /// 'i' - the index of the piece
+    ///
+    /// ```
+    ///  
+
+    ///
+    pub fn black_pawn_possible_moves(i: i32) -> Option<Vec<i32>> {}
+    ///
+    pub fn black_rook_possible_moves(i: i32) -> Option<Vec<i32>> {}
+    ///
+    pub fn black_knight_possible_moves(i: i32) -> Option<Vec<i32>> {}
+    ///
+    pub fn black_bishop_possible_moves(i: i32) -> Option<Vec<i32>> {}
     ///
     pub fn black_king_possible_moves(i: i32) -> Option<Vec<i32>> {
         let col = i % 8;
@@ -241,36 +223,19 @@ impl Game {
         Some(possible_moves)
         */
     }
-
-    ///
     pub fn black_queen_possible_moves(i: i32) -> Option<Vec<i32>> {}
-
     ///
-    /// # Arguments
-    /// 
-    /// 'i' - the index of the piece
-    /// 
-    /// ```
-    ///  
-    pub fn black_bishop_possible_moves(i: i32) -> Option<Vec<i32>> {}
+    pub fn white_pawn_possible_moves(i: i32) -> Option<Vec<i32>> {}
     ///
-    pub fn black_knight_possible_moves(i: i32) -> Option<Vec<i32>> {}
+    pub fn white_rook_possible_moves(i: i32) -> Option<Vec<i32>> {}
     ///
-    pub fn black_rook_possible_moves(i: i32) -> Option<Vec<i32>> {}
+    pub fn white_bishop_possible_moves(i: i32) -> Option<Vec<i32>> {}
     ///
-    pub fn black_pawn_possible_moves(i: i32) -> Option<Vec<i32>> {}
+    pub fn white_knight_possible_moves(i: i32) -> Option<Vec<i32>> {}
     ///
     pub fn white_king_possible_moves(i: i32) -> Option<Vec<i32>> {}
     ///
     pub fn white_queen_possible_moves(i: i32) -> Option<Vec<i32>> {}
-    ///
-    pub fn white_bishop_possible_moves(i: i32) -> Option<Vec<i32>> {}
-
-    pub fn white_knight_possible_moves(i: i32) -> Option<Vec<i32>> {}
-
-    pub fn white_rook_possible_moves(i: i32) -> Option<Vec<i32>> {}
-
-    pub fn white_pawn_possible_moves(i: i32) -> Option<Vec<i32>> {}
 }
 
 /// Implement print routine for Game.
@@ -298,11 +263,11 @@ impl fmt::Debug for Game {
 // ######### TESTS ##########
 // --------------------------
 
-    /// ```
-    /// let x = 5;
-    /// 
-    /// asser_eq!(x == 5);
-    /// 
+/// ```
+/// let x = 5;
+///
+/// asser_eq!(x == 5);
+///
 #[cfg(test)]
 mod tests {
     use super::Game;
