@@ -30,6 +30,19 @@ mod tests {
     }
 
     ///
+    pub fn out_of_bounds_test() {
+
+    }
+
+    // TODO diagonal_moves test 
+    // TODO horizontal moves tes
+    // TODO vertical moves test
+    // TODO parts of the pawn moveset 
+    // TODO how test king movesets?
+    
+    ///
+    pub fn parse_inputted_tile_to_index_test(tile_position: String) -> i32 {}
+    ///
     pub fn black_pawn_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
     ///
     pub fn black_rook_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
@@ -38,9 +51,8 @@ mod tests {
     ///
     pub fn black_bishop_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
     ///
-    pub fn black_king_possible_moves_test(i: i32) -> Option<Vec<i32>> {
-        
-    }
+    pub fn black_king_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
+    ///
     pub fn black_queen_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
     ///
     pub fn white_pawn_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
