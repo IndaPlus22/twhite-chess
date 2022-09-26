@@ -50,6 +50,7 @@ mod tests {
     pub fn black_knight_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
     ///
     pub fn black_bishop_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
+    //TODO start with testing black_king to see if appending a reference works
     ///
     pub fn black_king_possible_moves_test(i: i32) -> Option<Vec<i32>> {}
     ///

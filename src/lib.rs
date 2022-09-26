@@ -55,7 +55,6 @@ impl Game {
             colour: White,
             piece_type: WhitePawn,
         });
-        //TODO continue this implementation
         let white_rook = Some(Piece {
             colour: White,
             piece_type: WhiteRook,
@@ -102,13 +101,79 @@ impl Game {
         });
 
         Game {
-            /* initialise board, set game state to in progress, set active colour to white, ... */
-            //TODO which order to store pieces
-            board: [],
+            /* initialise board, set game state to in progress, set active colour to white,
+            set both kings positions */
+            board: [
+                WhiteRook,
+                WhiteKnight,
+                WhiteBishop,
+                WhiteQueen,
+                WhiteKing,
+                WhiteBishop,
+                WhiteKnight,
+                WhiteRook,
+                WhitePawn,
+                WhitePawn,
+                WhitePawn,
+                WhitePawn,
+                WhitePawn,
+                WhitePawn,
+                WhitePawn,
+                WhitePawn,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                BlackPawn,
+                BlackPawn,
+                BlackPawn,
+                BlackPawn,
+                BlackPawn,
+                BlackPawn,
+                BlackPawn,
+                BlackPawn,
+                BlackRook,
+                BlackKnight,
+                BlackBishop,
+                BlackKing,
+                BlackQueen,
+                BlackKing,
+                BlackBishop,
+                BlackKnight,
+                BlackRook,
+            ],
             state: GameState::InProgress,
             active_colour: Colour::White,
-            black_king_position: 4,
-            white_king_position: 60,
+            black_king_position: 60,
+            white_king_position: 4,
         }
     }
 
@@ -126,9 +191,8 @@ impl Game {
     pub fn parse_inputted_tile_to_index(tile: String) -> i32 {
         let mut column: i32;
 
-        //Convert the letter to correct column
-        /*
-        match case with char at index 0 in tile name {
+        //Convert the letter to correct column index
+        match tile.char_at(0) {
             "A" => column = 0,
             "B" => column = 1,
             "C" => column = 2,
@@ -136,29 +200,30 @@ impl Game {
             "E" => column = 4,
             "F" => column = 5,
             "H" => column = 6,
-            "G" => column = 7
+            "G" => column = 7,
         }
-        */
 
-        //Convert the number in the tile name to an int
         let mut row: i32;
 
-        /*
-        use match case with 1 => 0 or parse string to int and subtact 1 from the result
-        */
+        //Convert the number in the tile name to correct row index
+        match tile.char_at(1) {
+            "1" => column = 0,
+            "2" => column = 1,
+            "3" => column = 2,
+            "4" => column = 3,
+            "5" => column = 4,
+            "6" => column = 5,
+            "7" => column = 6,
+            "8" => column = 7,
+        }
 
-        //return the index
+        //Return the index
         return row * 8 + column;
     }
 
-    /// Set the piece type that a pawn turns into following a promotion.
+    /// Set the piece type that a pawn turns into following a promotion. TODO promotion
     pub fn set_promotion(&mut self, piece: String) -> () {
         ()
-    }
-
-    //Get the current game state.//TODO what's the point of this
-    pub fn get_game_state(&self) -> GameState {
-        self.state
     }
 
     /// If a piece is standing on the given tile, return all possible
