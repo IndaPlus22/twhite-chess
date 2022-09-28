@@ -30,8 +30,11 @@ mod tests {
     }
 
     ///
-    pub fn out_of_bounds_test() {
+    //pub fn 
 
+    ///
+    pub fn out_of_bounds_test() {
+        
     }
 
     // TODO diagonal_moves test 
