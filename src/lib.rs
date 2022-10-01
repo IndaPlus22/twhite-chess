@@ -146,7 +146,7 @@ impl Game {
                 None,
                 None,
                 None,
-                None,
+                white_pawn,
                 None,
                 None,
                 None,
@@ -188,7 +188,7 @@ impl Game {
         self.board[tile_to_move_to] = self.board[tile_to_move_from];
         self.board[tile_to_move_from] = None;
 
-        //TODO implement with get_possible_moves 
+        //TODO implement with get_possible_moves
     }
 
     //Parse the letter and number in the tile name to the board index and return it
@@ -291,53 +291,34 @@ impl Game {
         use Colour::*;
 
         let mut possible_moves: Vec<usize> = Vec::new();
-        //TODO fixa logiken med kolumner
+
+        //Create a bool to only check tiles on the board
         let mut index_column: i32 = i as i32 % 8;
         let mut index_row: i32 = i as i32 / 8;
 
+        let mut possible_moves: Vec<usize> = Vec::new();
         let potential_diagonal_moves: Vec<usize> = vec![i - 7, i - 9];
 
-        //Create a vector with potential diagonal moves to make
+        //Check potential moves diagonally and add the possible moves to the vector possible_moves
         for tile in potential_diagonal_moves {
             let mut tile_column: i32 = tile as i32 % 8;
             let mut tile_row: i32 = tile as i32 / 8;
             let mut out_of_bounds = (tile_column < index_column - 1)
                 || (index_column + 1 < tile_column)
-                || (tile_row < index_column - 1)
+                || (tile_row <= index_column - 1)
                 || (index_column + 1 < tile_column);
-            if !out_of_bounds {
-                //TODO hur hitta vit eller vart ska man ha allt
-                if (self.board[tile].as_ref().unwrap().colour == White
-                    || self.board[tile].is_none())
-                    && !out_of_bounds
-                {
+            if !out_of_bounds
+                && self.board[tile].as_ref().is_some() 
+                && self.board[tile].as_ref().unwrap().colour == White {
                     possible_moves.push(tile);
                 }
-                if (self.board[tile].as_ref().unwrap().colour == White
-                    || self.board[tile].is_none())
-                    && !out_of_bounds
-                {
-                    possible_moves.push(tile);
-                }
-            }
         }
 
-        let forward_moves: Vec<usize> = vec![i - 8, i - 16];
-        //
-        for tile in forward_moves {
-            //Check potential moves forward and add the possible moves to the vector possible_moves
-            let mut tile_column: i32 = tile as i32 % 8;
-            let mut tile_row: i32 = tile as i32 / 8;
-            let mut out_of_bounds = (tile_column < index_column - 1)
-                || (index_column + 1 < tile_column)
-                || (tile_row < index_column - 1)
-                || (index_column + 1 < tile_column);
-            if self.board[tile].as_ref().unwrap().colour != Black {
-                if self.board[i - 8].is_none() && !out_of_bounds {
-                    possible_moves.push(tile);
-                } else if self.board[i - 16].is_none() && !out_of_bounds && index_row == 6 {
-                    possible_moves.push(tile);
-                }
+        //Check potential moves forward and add the possible moves to the vector possible_moves
+        if self.board[i - 8].is_none() {
+            possible_moves.push(i - 8);
+            if self.board[i - 16].is_none() && index_row == 6 {
+                possible_moves.push(i - 16);
             }
         }
 
@@ -560,20 +541,29 @@ impl Game {
                 || (tile_row <= index_column - 1)
                 || (index_column + 1 < tile_column);
             if !out_of_bounds {
-                if (game.board[i + 7].as_ref().unwrap().colour == Black
-                    || game.board[i + 7].is_none())
+                if (self.board[i + 7].as_ref().unwrap().colour == Black
+                    || self.board[i + 7].is_none())
                     && !out_of_bounds
                 {
                     possible_moves.push(tile);
                 }
-                if (game.board[i + 9].as_ref().unwrap().colour == Black
-                    || game.board[i + 9].is_none())
+                if (self.board[i + 9].as_ref().unwrap().colour == Black
+                    || self.board[i + 9].is_none())
                     && !out_of_bounds
                 {
                     possible_moves.push(tile);
                 }
             }
         }
+
+        //Check potential moves forward and add the possible moves to the vector possible_moves
+        if self.board[i + 8].is_none() {
+            possible_moves.push(i + 8);
+            if self.board[i + 16].is_none() && index_row == 1 {
+                possible_moves.push(i + 16);
+            }
+        }
+
         Some(possible_moves)
     }
     ///
@@ -788,7 +778,7 @@ mod tests {
         assert!(out_of_bounds);
     }
 
-/*     #[test]
+    /*     #[test]
     fn make_move_test() {
 
         let from: String = String::from("A2");
@@ -801,6 +791,56 @@ mod tests {
         game.board[tile_to_move_to] = game.board[tile_to_move_from];
         game.board[tile_to_move_from] = None;
     } */
+
+    ///
+    #[test]
+    fn black_pawn_possible_moves_test() {
+        use Colour::*;
+
+        let game = Game::new();
+
+        println!("{:?}", game);
+
+        let i = 48;
+
+        let mut possible_moves: Vec<usize> = Vec::new();
+
+        //Create a bool to only check tiles on the board
+        let mut index_column: i32 = i as i32 % 8;
+        let mut index_row: i32 = i as i32 / 8;
+
+        let mut possible_moves: Vec<usize> = Vec::new();
+        let potential_diagonal_moves: Vec<usize> = vec![i - 7, i - 9];
+
+        //Check potential moves diagonally and add the possible moves to the vector possible_moves
+        for tile in potential_diagonal_moves {
+            let mut tile_column: i32 = tile as i32 % 8;
+            let mut tile_row: i32 = tile as i32 / 8;
+            let mut out_of_bounds = (tile_column < index_column - 1)
+                || (index_column + 1 < tile_column)
+                || (tile_row <= index_column - 1)
+                || (index_column + 1 < tile_column);
+            if !out_of_bounds
+                && game.board[tile].as_ref().is_some() 
+                && game.board[tile].as_ref().unwrap().colour == White {
+                    possible_moves.push(tile);
+                }
+        }
+
+        //Check potential moves forward and add the possible moves to the vector possible_moves
+        if game.board[i - 8].is_none() {
+            possible_moves.push(i - 8);
+            if game.board[i - 16].is_none() && index_row == 6 {
+                possible_moves.push(i - 16);
+            }
+        }
+
+        possible_moves.sort();
+
+        let actual_possible_moves: Vec<usize> = vec![32, 40, 41];
+
+        assert_eq!(actual_possible_moves, possible_moves);
+    }
 
     #[test]
     ///
@@ -830,27 +870,24 @@ mod tests {
                 || (index_column + 1 < tile_column)
                 || (tile_row <= index_column - 1)
                 || (index_column + 1 < tile_column);
-            if !out_of_bounds {
-                if (game.board[i + 7].as_ref().unwrap().colour == Black
-                    || game.board[i + 7].is_none())
-                    && !out_of_bounds
-                {
+            if !out_of_bounds
+                && game.board[i + 7].as_ref().is_some()
+                && game.board[i + 9].as_ref().is_some()
+            {
+                if game.board[i + 7].as_ref().unwrap().colour == Black {
                     possible_moves.push(tile);
                 }
-                if (game.board[i + 9].as_ref().unwrap().colour == Black
-                    || game.board[i + 9].is_none())
-                    && !out_of_bounds
-                {
+                if game.board[i + 9].as_ref().unwrap().colour == Black {
                     possible_moves.push(tile);
                 }
             }
         }
 
         //Check potential moves forward and add the possible moves to the vector possible_moves
-        if game.board[i+8].is_none() {
-            possible_moves.push(i+8);
+        if game.board[i + 8].is_none() {
+            possible_moves.push(i + 8);
             if game.board[i + 16].is_none() && index_row == 1 {
-                possible_moves.push(i+16);
+                possible_moves.push(i + 16);
             }
         }
 
@@ -859,12 +896,7 @@ mod tests {
         let actual_possible_moves: Vec<usize> = vec![16, 17, 24];
 
         assert_eq!(actual_possible_moves, possible_moves);
-                
     }
-
-
-
-
 
     ///
     #[test]
@@ -1124,8 +1156,8 @@ mod tests {
         TODO how test king movesets?
 
 
-        ///
-        fn black_pawn_possible_moves_test(i: usize) -> Option<Vec<usize>> {}
+
+
         ///
         fn black_rook_possible_moves_test(i: usize) -> Option<Vec<usize>> {}
         ///
